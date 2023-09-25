@@ -1,2 +1,5 @@
 #pip3 install -U -r requirements.txt
 #paquete == x.y.z
+
+#procesamiento de imagenes
+opencv-python == 4.8.0.76
