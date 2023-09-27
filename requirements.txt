@@ -3,3 +3,5 @@
 
 #procesamiento de imagenes
 opencv-python == 4.8.0.76
+MIDIUtil == 1.2.1
+pygame==2.5.1
