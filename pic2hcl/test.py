@@ -18,6 +18,7 @@ def resize_img(image, resize_factor):
         image = cv2.resize(image, dim, interpolation = cv2.INTER_AREA)
     
     """ print("RESIZED dimensions: ", image.shape[:2]) """
+    return image
 
 #Display stuff
 """ if image is None:
@@ -39,15 +40,11 @@ else:
 The shape attribute for numpy arrays returns the dimensions of the array. 
 If Y has n rows and m columns, then Y.shape is (n,m). So Y.shape[0] is n.
 """
-def read_line_by_line(image):
-    image = cv2.cvtColor(image, cv2.COLOR_BGR2HLS)
-    hsl_matrix = []  
-    for y in range(image.shape[0]):
-        row = []
-        for x in range(image.shape[1]):
-            pixel = image[y, x]
-            hsl_value = ((pixel[0]/255)*180, (pixel[2]/2.55), (pixel[1]/2.55))
-            row.append(hsl_value)
-        hsl_matrix.append(row)
+def read_line(image, row_count):
+    row = []
+    for x in range(image.shape[1]):
+        pixel = image[row_count, x]
+        hsl_value = ((pixel[0]/255)*180, (pixel[2]/2.55), (pixel[1]/2.55))
+        row.append(hsl_value)
         
-    return hsl_matrix
+    return row
