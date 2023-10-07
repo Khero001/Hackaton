@@ -1,0 +1,8 @@
+Opciones para el s:
+    - Distorsion/efecto
+    - Instrumentos
+    - Duración de la nota
+    
+MIDIutil
+
+Presentación o video 
