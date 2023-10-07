@@ -1,6 +1,7 @@
 import cv2
 from midiutil import MIDIFile
 import pygame.mixer
+import pygame.midi
 from time import sleep
 import numpy as np
 from io import StringIO
@@ -85,12 +86,14 @@ pygame.mixer.init()
 img = cv2.imread('C:/Users/Optimen/Documents/Hackaton/test/pb.jpg')
 # cambia a hls *importante el orden, no es hsl
 imgh = cv2.cvtColor(img, cv2.COLOR_BGR2HLS)
+#1.411764705882353
 # genera ventana y listener con el click
 #cv2.namedWindow('test2')
 #cv2.setMouseCallback('test2', click_event)
 # crea canal midi
-MyMIDI = MIDIFile(1) # 1 track
+MyMIDI = MIDIFile(2) # 1 track
 MyMIDI.addTempo(0,0, 60)
+MyMIDI.addTempo(1,0, 60)
 
 
 
@@ -169,6 +172,7 @@ with open("test/sound.mid", "wb") as output_file:
 
 
 pygame.mixer.music.load("test/sound.mid")
+pygame.midi.Output.set_instrument(40)
 pygame.mixer.music.play()
 while pygame.mixer.music.get_busy():
     sleep(1)
