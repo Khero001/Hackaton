@@ -1,6 +1,6 @@
 import cv2
 
-image = cv2.imread('black_hole.jpg', 1)
+image = cv2.imread('pic2hcl/black_hole.jpg', 1)
 
 #Image at most of 200x200 pixels
 needs_resize = False

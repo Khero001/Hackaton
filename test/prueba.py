@@ -58,12 +58,24 @@ def hls2chord(hsl):
     elif( l>=212 and l<=255):
         note+=24
     
+    
+    '''
+    #usar l para nota 2 de acorde:
+    #((l-tope inferior)/2)-21 = salto[va de -21 a 21]
+    
+    #s para nota 3 y *desfase y octava de la anterior
+    
+    [4,7]
+    [3,7]
+    '''
     return note,s*100
 def click_event(event, x, y, flags, params):
    if event == cv2.EVENT_LBUTTONDOWN:
         print(f'coordenadas ({y},{x})')
         reproduce_pixel(hls2chord( imgh[y][x] )[0])
         print("h: "+str((imgh[y][x][0]/255)*180)+"°    s: "+str(imgh[y][x][2]/2.55)+"%    l: "+str(imgh[y][x][1]/2.55)+"%")
+        print("h: "+str(imgh[y][x][0])+"    s: "+str(imgh[y][x][2])+"    l: "+str(imgh[y][x][1])+"")
+        
         print("nota: "+str(hls2chord( imgh[y][x] )[0]))
 
 # inicia pygame para reproducir notas
@@ -74,8 +86,8 @@ img = cv2.imread('C:/Users/Optimen/Documents/Hackaton/test/pb.jpg')
 # cambia a hls *importante el orden, no es hsl
 imgh = cv2.cvtColor(img, cv2.COLOR_BGR2HLS)
 # genera ventana y listener con el click
-cv2.namedWindow('test2')
-cv2.setMouseCallback('test2', click_event)
+#cv2.namedWindow('test2')
+#cv2.setMouseCallback('test2', click_event)
 # crea canal midi
 MyMIDI = MIDIFile(1) # 1 track
 MyMIDI.addTempo(0,0, 60)
@@ -90,21 +102,20 @@ b=180
 
 
 '''
-array_notas=[]
-for i, row in enumerate(img):
-    for j, pixel in enumerate(img[0]):
-        aux+=1
-        print(img[i][j])
-        pitch,vol=hsl2noteVol( rgb2hsl(img[i][j]) )
-        array_notas.append(pitch)
+array_notas=[[1]*imgh.shape[1] for x in range(imgh.shape[0])]
+#array_segunda = [][]
+#array_tercera = [][]
 
-def get_unique_list(seq):
-    seen = []
-    return [x for x in seq if x not in seen and not seen.append(x)]
+for i, row in enumerate(imgh):
+    for j, pixel in enumerate(imgh[0]):
+        #print(str(i)+" , "+str(j))
+        
+
+        array_notas[i][j]=hls2chord( imgh[i][j] )[0]
+        
+        #array_notas.append(pitch)
+
 '''
-
-
-#print(" son: "+str(aux))
 
 #print( img[a][b] )
 #print(imgh[a][b])
@@ -122,7 +133,7 @@ def get_unique_list(seq):
 #octava 6  [85, 96] 
 
 # arreglo de notas
-degrees =[ 60,64,67 ]
+degrees =[ 60,61,62,63,64,65,66,67,68,69,70,71,72 ]
 #degrees = [60,64,67]
 time     = 0   # cuando inicia
 duration = 0.5   # duracion
@@ -140,14 +151,14 @@ for nota in degrees:
 
 
 
-
+'''
 while True:
    cv2.imshow('test2',img)
    k = cv2.waitKey(1) & 0xFF
    if k == 27:
       break
 cv2.destroyAllWindows()
-
+'''
 
 
 
