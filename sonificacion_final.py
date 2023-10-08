@@ -191,10 +191,10 @@ def play (row, duration, player, instrument_dict):
 def write_notes (row, duration, time, midi, instrument_dict):
     print(row)
     for i in row:
-        midi.addNote(instrument_dict[int(i[1])], 0, int(i[0]), time+(duration*i[3]), duration*i[2], 127)
+        midi.addNote(track=instrument_dict[int(i[1])]-1, channel=0, pitch=int(i[0]), time=time+(duration*i[3]), duration=duration*i[2], volume=127)
 
 
-def main(nombre_imagen='test/estrellas5novena.png',real_time=False,duration=0.2,moda=5,resize=420):
+def main(nombre_imagen='test/estrellas5novena.png',real_time=False,duration=0.4,moda=5,resize=420):
     #lee img
     image = cv2.imread(nombre_imagen)
     #reduce img
