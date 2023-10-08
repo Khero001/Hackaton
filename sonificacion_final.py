@@ -66,7 +66,7 @@ def hls2noteInst(hsl):
         note+=24 #octava 6
     
     if(s>=0 and s<30.6):
-        inst= 12 # marimba
+        inst= 32 # 32 bajo acustico
         factor_nota=0.5
         note, inicio= doubleIns(note,36)
     elif(s>=30.6 and s<55.93):
@@ -98,7 +98,7 @@ def hls2noteInst(hsl):
         factor_nota=0.5
         note, inicio= doubleIns(note,60)
     elif(s>=205.13 and s<230.06):
-        inst= 8 # celesta
+        inst=48  # cuerdas 1 
         factor_nota=0.5
         note, inicio= doubleIns(note,60)
     elif( s>=230.06 and s<=255):
@@ -194,8 +194,8 @@ def write_notes (row, duration, time, midi, instrument_dict):
         midi.addNote(track=instrument_dict[int(i[1])]-1, channel=0, pitch=int(i[0]), time=time+(duration*i[3]), duration=duration*i[2], volume=127)
 
 
-def main(nombre_imagen='test/estrellas5novena.png',real_time=False,duration=0.4,moda=5,resize=420):
-    #lee img
+def main(nombre_imagen='Videos\\Hackaton\\test\\galaxias5octava.png',real_time=True,duration=0.4,moda=5,resize=420):
+    #lee im
     image = cv2.imread(nombre_imagen)
     #reduce img
     image= resize_img(image,resize)
@@ -204,7 +204,7 @@ def main(nombre_imagen='test/estrellas5novena.png',real_time=False,duration=0.4,
     #num max de líneas
     num_rows = image.shape[0]
     #dicionario de instrumentos
-    instrument_dict = {12:1, 74:2, 40:3, 69:4, 56:5, 46:6, 71:7, 79:8, 8:9, 0:10}
+    instrument_dict = {32:1, 74:2, 40:3, 69:4, 56:5, 46:6, 71:7, 79:8, 48:9, 0:10}
     #generate MIDI or real time
     if real_time:
         #init real time
@@ -220,7 +220,7 @@ def main(nombre_imagen='test/estrellas5novena.png',real_time=False,duration=0.4,
             play(row, duration, player, instrument_dict)
     else:
         #proceso generación midi
-        instruments=['marimba','flauta dulce','violin','corno ingles','trompeta','arpa','clarinete','ocarina','celesta','piano']
+        instruments=['bajo acustico','flauta dulce','violin','corno ingles','trompeta','arpa','clarinete','ocarina','cuerdas 1','piano']
         time=0
         MyMIDI = MIDIFile(10) # 10 tracks
         #inicializa los tracks
