@@ -154,45 +154,71 @@ def n_vals_from_mode (image, row_count, n_mode):
         result = [item for items, c in Counter(complete_row).most_common()
                                             for item in [items] * c]
     complete_row = list(set(result))
-    selection_row = complete_row[:n_mode]
+    if (len(complete_row) - 1) < n_mode:
+        selection_row = complete_row[0:]
+    else:
+        selection_row = complete_row[:n_mode]
     for selection in selection_row:
-        selection = selection.split("/")
-        individual_val = [int(val) for val in selection]
-        row.append(individual_val)
+        selection = selection.split("/") #Separa valor '12/3/0.5/4' a ['12', '3', '0.5', '4']
+        individual_val_list = []
+        for i in selection:  
+            individual_val = float(i)
+            individual_val_list.append(individual_val)
+            
+        row.append(individual_val_list)
     return row
 
-def play (row, duration, player):
-    for element in row:
-        player.note_on(element[0],127,element[1])
-        
-    sleep(duration)
+def play (row, duration, player, instrument_dict):
+    print(row)
+    for i in row:
+        if i[3] == 0.0:
+            player.note_on(int(i[0]), 127, instrument_dict[int(i[1])])
     
-    for element in row:
-        player.note_off(element[0], 127, element[1])
+    sleep(duration/2)
+    
+    for i in row:
+        if i[3] == 0.5:
+            player.note_on(int(i[0]), 127, instrument_dict[int(i[1])])
+        if i[2] == 0.5 and i[3] == 0.0:
+            player.note_off(int(i[0]), 127, instrument_dict[int(i[1])])
+            
+    sleep(duration/2)
+    
+    for i in row:
+        if(i[2] == 0.5 and i[3] == 0.5) or (i[2] == 1.0):
+            player.note_off(int(i[0]), 127, instrument_dict[int(i[1])])
     
 
 
 
 
 
-def main():
-    pygame.midi.init()
-    player = pygame.midi.Output(0)
+def main(real_time=True):
     #lee img
-    image = cv2.imread('test/pb.jpg')
+    image = cv2.imread('test/estrellas5novena.png')
     #reduce img
     image= resize_img(image,420)
     #img a color hls
     image = cv2.cvtColor(image, cv2.COLOR_BGR2HLS)
     #num max de líneas
     num_rows = image.shape[0]
-    #itera por línea
-    for row_number in range(num_rows):
-        #Detecta valores únicos
-        row = unique_vals_in_row(image, row_number)
-        #Reproduce por línea
-        play(row, 0.5, player)
-    
+    #generate MIDI or real time
+    if real_time:
+        #init real time
+        pygame.midi.init()
+        player = pygame.midi.Output(0)
+        instrument_dict = {12:1, 74:2, 40:3, 69:4, 56:5, 46:6, 71:7, 79:8, 8:9, 0:10}
+        for key, val in instrument_dict.items():
+            player.set_instrument(key, val)
+        #itera por línea
+        for row_number in range(num_rows):
+            #Detecta valores más repetidos (ejemplo/default: 3)
+            row = n_vals_from_mode(image, row_number, 5)
+            #Reproduce por línea (duración max por nota de 0.6 sec)
+            play(row, 0.2, player, instrument_dict)
+    else:
+        #proceso generación midi
+        print("gen_midi")
 
 
 
