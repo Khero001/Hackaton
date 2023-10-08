@@ -189,7 +189,20 @@ def play (row, duration, player, instrument_dict):
             player.note_off(int(i[0]), 127, instrument_dict[int(i[1])])
     
 
+def save():
+    factor=1
+    instruments_dict={12:'marimba',74:'flauta dulce',40:'violin',69:'corno ingles',56:'trompeta',46:'arpa',71:'clarinete',79:'ocarina',8:'celesta',0:'piano'}
+    instruments=['marimba','flauta dulce','violin','corno ingles','trompeta','arpa','clarinete','ocarina','celesta','piano']
+    time=0
+    midi_file = MIDIFile(10) # 1 track
+    
+    for i in range(10):
+        midi_file.addTrackName(i, 0, instruments[i])
+        midi_file.addTempo(i,0, 60)
 
+
+    midi_file.addNote(0, 0, nota, 0, 0.5, 100)
+    midi_file.addTrackName(track, time, track_name)
 
 
 
