@@ -48,3 +48,17 @@ def read_line(image, row_count):
         row.append(hsl_value)
         
     return row
+
+def unique_vals_in_line (image, row_count):
+    row = []
+    for x in range(image.shape[1]):
+        pixel = image[row_count, x]
+        hl_inst = hls2noteInst(pixel) #[note, instrument]
+        hl_inst_str = str(hl_inst[0]) + "/" + str(hl_inst[1]) #note/instrument
+        if hl_inst_str not in row:
+            hl_inst_str = hl_inst_str.split("/")
+            unique_vals = [int(val) for val in hl_inst_str]
+            row.append(unique_vals)
+        
+    return row
+
