@@ -116,19 +116,7 @@ def doubleIns(nota,start):
         inicio=0
     nota=start+nota
     return nota,inicio
-'''
-def img2matrixNotesInstruments(image_hsl):
-    notes=[]
 
-    for y in range(image_hsl.shape[0]):
-        row = []
-        for x in range(image_hsl.shape[1]):
-
-            hsl_value = ((pixel[0]/255)*180, (pixel[2]/2.55), (pixel[1]/2.55))
-            row.append(hsl_value)
-        notes.append(row)
-
-'''
 def unique_vals_in_row (image, row_count):
     row = []
     for x in range(image.shape[1]):
@@ -169,7 +157,7 @@ def n_vals_from_mode (image, row_count, n_mode):
     return row
 
 def play (row, duration, player, instrument_dict):
-    print(row)
+    #print(row)
     for i in row:
         if i[3] == 0.0:
             player.note_on(int(i[0]), 127, instrument_dict[int(i[1])])
@@ -189,12 +177,12 @@ def play (row, duration, player, instrument_dict):
             player.note_off(int(i[0]), 127, instrument_dict[int(i[1])])
 
 def write_notes (row, duration, time, midi, instrument_dict):
-    print(row)
+    #print(row)
     for i in row:
         midi.addNote(track=instrument_dict[int(i[1])]-1, channel=0, pitch=int(i[0]), time=time+(duration*i[3]), duration=duration*i[2], volume=127)
 
 
-def main(nombre_imagen='test/estrellas5novena.png',real_time=False,duration=0.4,moda=5,resize=420):
+def main(nombre_imagen='test/estrellas5novena.png',real_time=True,duration=0.4,moda=5,resize=420):
     #lee img
     image = cv2.imread(nombre_imagen)
     #reduce img
@@ -235,7 +223,6 @@ def main(nombre_imagen='test/estrellas5novena.png',real_time=False,duration=0.4,
             time=time+duration
         with open((nombre_imagen.split(".")[0])+"_sonification.mid", "wb") as output_file:
             MyMIDI.writeFile(output_file)
-
     '''
     while True:
         cv2.imshow('imagen de prueba',image)
@@ -245,9 +232,6 @@ def main(nombre_imagen='test/estrellas5novena.png',real_time=False,duration=0.4,
             break
     cv2.destroyAllWindows()
     '''
-
-
-
 main()
 
 
