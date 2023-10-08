@@ -23,6 +23,7 @@ def resize_img(image, resize_factor):
 
 def hls2noteInst(hsl):
     note=0
+    inst=0
     h,l,s = hsl[0],hsl[1],hsl[2]
     #todas en octava 4
     if(h>=244.375 or h<=10.625):
@@ -50,30 +51,41 @@ def hls2noteInst(hsl):
     elif(h>223.035 and h<=243.285):
         note=71 # B
   
-    if( l>=0 and l<42):
-        note-=36
-    elif( l>=42 and l<85):
-        note-=24
-    elif( l>=85 and l<127):
-        note-=12
-    elif( l>=127 and l<170):
-        note=note
-    elif( l>=170 and l<212):
-        note+=12
-    elif( l>=212 and l<=255):
-        note+=24
+    if( l>=0 and l<25.5):
+        note=0 # filtro de obscuro
+    elif( l>=25.5 and l<63.45):
+        note-=36 #octava 2
+    elif( l>=63.45 and l<102):
+        note-=12 #octava 3
+    elif( l>=140.25 and l<178.5):
+        note=note #octava 4
+    elif( l>=178.5 and l<216.75):
+        note+=12 #octava 5
+    elif( l>=216.75 and l<=255):
+        note+=24 #octava 6
     
+    if(s>=0 and s<30.6):
+        inst= 0 # 
+    elif(s>=30.6 and s<55.93):
+        inst= 0 #
+    elif(s>=55.93 and s<80.46):
+        inst= 0 #
+    elif(s>=80.46 and s<105.39):
+        inst= 0 #
+    elif(s>=105.39 and s<130.33):
+        inst= 0 #
+    elif(s>=130.33 and s<155.26):
+        inst= 0 #
+    elif(s>=155.26 and s<180.19):
+        inst= 0 #
+    elif(s>=180.19 and s<205.13):
+        inst= 0 #
+    elif(s>=205.13 and s<230.06):
+        inst= 0 #
+    elif( s>=230.06 and s<=255):
+        inst= 0 # piano
     
-    '''
-    #usar l para nota 2 de acorde:
-    #((l-tope inferior)/2)-21 = salto[va de -21 a 21]
-    
-    #s para nota 3 y *desfase y octava de la anterior
-    
-    [4,7]
-    [3,7]
-    '''
-    return note,s*100
+    return note,inst
 
 
 
