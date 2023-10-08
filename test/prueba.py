@@ -1,6 +1,7 @@
 import cv2
 from midiutil import MIDIFile
 import pygame.mixer
+import pygame.midi
 from time import sleep
 import numpy as np
 from io import StringIO
@@ -20,31 +21,31 @@ def hls2chord(hsl):
     note=0
     h,l,s = hsl[0],hsl[1],hsl[2]
     #todas en octava 4
-    if(h>=172 or h<=7):
+    if(h>=244.375 or h<=10.625):
         note=60 # C
-    elif(h>7 and h<=22):
+    elif(h>10.625 and h<=31.875):
         note=61 # C#
-    elif(h>22 and h<=37):
+    elif(h>31.875 and h<=53.035):
         note=62 # D
-    elif(h>37 and h<=52):
+    elif(h>53.035 and h<=74.285):
         note=63 # D#
-    elif(h>52 and h<=67):
+    elif(h>74.285 and h<=95.535):
         note=64 # E
-    elif(h>67 and h<=82):
+    elif(h>95.535 and h<=116.785):
         note=65 # F
-    elif(h>82 and h<=97):
+    elif(h>116.785 and h<=138.035):
         note=66 # F#
-    elif(h>97 and h<=112):
+    elif(h>138.035 and h<=159.285):
         note=67 # G
-    elif(h>112 and h<=127):
+    elif(h>159.285 and h<=180.535):
         note=68 # G#
-    elif(h>127 and h<=142):
+    elif(h>180.535 and h<=201.785):
         note=69 # L
-    elif(h>142 and h<=157):
+    elif(h>201.785 and h<=223.035):
         note=70 # L#
-    elif(h>157 and h<=172):
+    elif(h>223.035 and h<=243.285):
         note=71 # B
-
+  
     if( l>=0 and l<42):
         note-=36
     elif( l>=42 and l<85):
@@ -85,12 +86,14 @@ pygame.mixer.init()
 img = cv2.imread('C:/Users/Optimen/Documents/Hackaton/test/pb.jpg')
 # cambia a hls *importante el orden, no es hsl
 imgh = cv2.cvtColor(img, cv2.COLOR_BGR2HLS)
+#1.411764705882353
 # genera ventana y listener con el click
 #cv2.namedWindow('test2')
 #cv2.setMouseCallback('test2', click_event)
 # crea canal midi
-MyMIDI = MIDIFile(1) # 1 track
+MyMIDI = MIDIFile(2) # 1 track
 MyMIDI.addTempo(0,0, 60)
+MyMIDI.addTempo(1,0, 60)
 
 
 
@@ -169,6 +172,7 @@ with open("test/sound.mid", "wb") as output_file:
 
 
 pygame.mixer.music.load("test/sound.mid")
+pygame.midi.Output.set_instrument(40)
 pygame.mixer.music.play()
 while pygame.mixer.music.get_busy():
     sleep(1)
