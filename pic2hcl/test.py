@@ -61,4 +61,3 @@ def unique_vals_in_line (image, row_count):
             row.append(unique_vals)
         
     return row
-

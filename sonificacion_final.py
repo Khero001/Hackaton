@@ -102,21 +102,50 @@ def img2matrixNotesInstruments(image_hsl):
         notes.append(row)
 
 '''
+def unique_vals_in_row (image, row_count):
+    row = []
+    for x in range(image.shape[1]):
+        pixel = image[row_count, x]
+        hl_inst = hls2noteInst(pixel) #[note, instrument]
+        hl_inst_str = str(hl_inst[0]) + "/" + str(hl_inst[1]) #note/instrument
+        if hl_inst_str not in row:
+            hl_inst_str = hl_inst_str.split("/")
+            unique_vals = [int(val) for val in hl_inst_str]
+            row.append(unique_vals)
+        
+    return row
 
-
-
+def play (row, duration, player):
+    for element in row:
+        player.note_on(element[0],127,element[1])
+        
+    sleep(duration)
+    
+    for element in row:
+        player.note_off(element[0], 127, element[1])
+    
 
 
 
 
 
 def main():
+    pygame.midi.init()
+    player = pygame.midi.Output(0)
     #lee img
     image = cv2.imread('test/pb.jpg')
     #reduce img
     image= resize_img(image,420)
     #img a color hls
     image = cv2.cvtColor(image, cv2.COLOR_BGR2HLS)
+    #num max de líneas
+    num_rows = image.shape[0]
+    #itera por línea
+    for row_number in range(num_rows):
+        #Detecta valores únicos
+        row = unique_vals_in_row(image, row_number)
+        #Reproduce por línea
+        play(row, 0.5, player)
     
 
     while True:
