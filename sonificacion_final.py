@@ -187,53 +187,54 @@ def play (row, duration, player, instrument_dict):
     for i in row:
         if(i[2] == 0.5 and i[3] == 0.5) or (i[2] == 1.0):
             player.note_off(int(i[0]), 127, instrument_dict[int(i[1])])
-    
 
-def save():
-    factor=1
-    instruments_dict={12:'marimba',74:'flauta dulce',40:'violin',69:'corno ingles',56:'trompeta',46:'arpa',71:'clarinete',79:'ocarina',8:'celesta',0:'piano'}
-    instruments=['marimba','flauta dulce','violin','corno ingles','trompeta','arpa','clarinete','ocarina','celesta','piano']
-    time=0
-    midi_file = MIDIFile(10) # 1 track
-    
-    for i in range(10):
-        midi_file.addTrackName(i, 0, instruments[i])
-        midi_file.addTempo(i,0, 60)
+def write_notes (row, duration, time, midi, instrument_dict):
+    print(row)
+    for i in row:
+        midi.addNote(instrument_dict[int(i[1])], 0, int(i[0]), time+(duration*i[3]), duration*i[2], 127)
 
 
-    midi_file.addNote(0, 0, nota, 0, 0.5, 100)
-    midi_file.addTrackName(track, time, track_name)
-
-
-
-def main(real_time=True):
+def main(nombre_imagen='test/estrellas5novena.png',real_time=False,duration=0.2,moda=5,resize=420):
     #lee img
-    image = cv2.imread('test/estrellas5novena.png')
+    image = cv2.imread(nombre_imagen)
     #reduce img
-    image= resize_img(image,420)
+    image= resize_img(image,resize)
     #img a color hls
     image = cv2.cvtColor(image, cv2.COLOR_BGR2HLS)
     #num max de líneas
     num_rows = image.shape[0]
+    #dicionario de instrumentos
+    instrument_dict = {12:1, 74:2, 40:3, 69:4, 56:5, 46:6, 71:7, 79:8, 8:9, 0:10}
     #generate MIDI or real time
     if real_time:
         #init real time
         pygame.midi.init()
         player = pygame.midi.Output(0)
-        instrument_dict = {12:1, 74:2, 40:3, 69:4, 56:5, 46:6, 71:7, 79:8, 8:9, 0:10}
         for key, val in instrument_dict.items():
             player.set_instrument(key, val)
         #itera por línea
         for row_number in range(num_rows):
             #Detecta valores más repetidos (ejemplo/default: 3)
-            row = n_vals_from_mode(image, row_number, 5)
+            row = n_vals_from_mode(image, row_number, moda)
             #Reproduce por línea (duración max por nota de 0.6 sec)
-            play(row, 0.2, player, instrument_dict)
+            play(row, duration, player, instrument_dict)
     else:
         #proceso generación midi
-        print("gen_midi")
-
-
+        instruments=['marimba','flauta dulce','violin','corno ingles','trompeta','arpa','clarinete','ocarina','celesta','piano']
+        time=0
+        MyMIDI = MIDIFile(10) # 10 tracks
+        #inicializa los tracks
+        for i in range(10):
+            MyMIDI.addTrackName(i, 0, instruments[i])
+            MyMIDI.addTempo(i,0, 60)
+        #itera por línea
+        for row_number in range(num_rows):
+            #Detecta valores más repetidos (ejemplo/default: 3)
+            row = n_vals_from_mode(image, row_number, moda)
+            write_notes (row, duration, time, MyMIDI, instrument_dict)
+            time=time+duration
+        with open((nombre_imagen.split(".")[0])+"_sonification.mid", "wb") as output_file:
+            MyMIDI.writeFile(output_file)
 
     '''
     while True:
