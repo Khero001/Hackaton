@@ -65,30 +65,56 @@ def hls2noteInst(hsl):
         note+=24 #octava 6
     
     if(s>=0 and s<30.6):
-        inst= 0 # 
+        inst= 12 # marimba
+        factor_nota=0.5
+        nota, inicio= doubleIns(nota,36)
     elif(s>=30.6 and s<55.93):
-        inst= 0 #
+        inst= 74 # flauta dulce
+        factor_nota=0.5
+        nota, inicio= doubleIns(nota,60)
     elif(s>=55.93 and s<80.46):
-        inst= 0 #
+        inst= 40 # violin
+        factor_nota=0.5
+        nota, inicio= doubleIns(nota,60)
     elif(s>=80.46 and s<105.39):
-        inst= 0 #
+        inst= 69 # corno ingles
+        factor_nota=0.5
+        nota, inicio= doubleIns(nota,36)
     elif(s>=105.39 and s<130.33):
-        inst= 0 #
+        inst= 56 # trompeta
+        factor_nota=0.5
+        nota, inicio= doubleIns(nota,48)
     elif(s>=130.33 and s<155.26):
-        inst= 0 #
+        inst= 46 # arpa
+        factor_nota=1
+        inicio=0
     elif(s>=155.26 and s<180.19):
-        inst= 0 #
+        inst= 71 # clarinete
+        factor_nota=0.5
+        nota, inicio= doubleIns(nota,60)
     elif(s>=180.19 and s<205.13):
-        inst= 0 #
+        inst= 79 # ocarina
+        factor_nota=0.5
+        nota, inicio= doubleIns(nota,60)
     elif(s>=205.13 and s<230.06):
-        inst= 0 #
+        inst= 8 # celesta
+        factor_nota=0.5
+        nota, inicio= doubleIns(nota,60)
     elif( s>=230.06 and s<=255):
         inst= 0 # piano
+        factor_nota=1
+        inicio=0
     
-    return note,inst
-
-
-
+    return note,inst,factor_nota, inicio
+def doubleIns(nota,start):
+    nota=nota-24
+    if (nota>=36):
+        nota=nota-36
+        inicio=0.5
+    else:
+        inicio=0
+    nota=start+nota
+    return nota,inicio
 '''
 def img2matrixNotesInstruments(image_hsl):
     notes=[]
@@ -118,7 +144,11 @@ def main():
     #img a color hls
     image = cv2.cvtColor(image, cv2.COLOR_BGR2HLS)
     
+    print(doubleIns(25,60))
+    #print(hls2noteInst( image[120,200]) )
 
+
+    '''
     while True:
         cv2.imshow('imagen de prueba',image)
 
@@ -126,7 +156,7 @@ def main():
         if k == 27:
             break
     cv2.destroyAllWindows()
-
+    '''
 
 
 
