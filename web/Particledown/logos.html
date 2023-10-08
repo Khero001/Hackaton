@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imágenes Redimensionadas y Desplazamiento Continuo</title>
+    <style>
+        .container {
+            width: 800px;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .marquee-container {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        img {
+            
+            height: 200px;
+            display: block;
+            margin: auto;
+            margin-bottom: 0px; /* Agrega un margen inferior para separación */
+            width: 800px;
+        }
+
+        marquee {
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="marquee-container" id="marquee-container">
+            <marquee direction="down" scrollamount="10" id="marquee">
+                <img src="/imagenes/aire.png" alt="Imagen 1">
+                <img src="/imagenes/astechs.png" alt="Imagen 2">
+                <img src="/imagenes/ATG.png" alt="Imagen 3">
+                <img src="/imagenes/BOREAL.png" alt="Imagen 4">
+                <img src="/imagenes/cei.png" alt="Imagen 5">
+                <img src="/imagenes/CITIUS.png" alt="Imagen 6">
+                <img src="/imagenes/COPACHISA.png" alt="Imagen 7">
+                <img src="/imagenes/DSV.png" alt="Imagen 8">
+                <img src="/imagenes/FUNPREBA.png" alt="Imagen 9">
+                <img src="/imagenes/HARRIS.png" alt="Imagen 10">
+                <img src="/imagenes/horizontec.png" alt="Imagen 11">
+                <img src="/imagenes/NORAMEX.png" alt="Imagen 12">
+                <img src="/imagenes/NOVATEC.png" alt="Imagen 13">
+                <img src="/imagenes/optimen.png" alt="Imagen 14">
+                <img src="/imagenes/sia.png" alt="Imagen 15">
+                <img src="/imagenes/SIASA.png" alt="Imagen 16">
+                <img src="/imagenes/SPECTRUM.png" alt="Imagen 17">
+                <img src="/imagenes/ssc.png" alt="Imagen 18">
+                <img src="/imagenes/temaplax.png" alt="Imagen 19">
+            </marquee>
+        </div>
+    </div>
+    <script>
+        const marqueeContainer = document.getElementById("marquee-container");
+        const marquee = document.getElementById("marquee");
+        
+        // Función para clonar las imágenes y mantener el desplazamiento continuo
+        function cloneImages() {
+            const images = marquee.getElementsByTagName("img");
+            const numImages = images.length;
+            
+            for (let i = 0; i < numImages; i++) {
+                const clone = images[i].cloneNode(true);
+                marquee.appendChild(clone);
+            }
+        }
+        
+        // Llama a la función para clonar las imágenes al cargar la página
+        cloneImages();
+    </script>
+</body>
+</html>

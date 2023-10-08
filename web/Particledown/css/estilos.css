@@ -1,0 +1,29 @@
+body{
+  background-color: #030e21;
+}
+#particles-js{
+  height: 100vh;
+  width: 100%;
+  position: fixed;
+  z-index: 99;
+}
+/* Estilos para los iframes */
+.iframe-container {
+  position: relative;
+  width: 100%;
+  height: 720px;
+  margin: 0;
+  padding: 0;
+  z-index: -1;
+}
+
+.iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
