@@ -4,6 +4,7 @@ import pygame.mixer
 import pygame.midi
 from time import sleep
 import numpy as np
+from collections import Counter
 
 def resize_img(image, resize_factor):
     needs_resize = False
@@ -107,12 +108,31 @@ def unique_vals_in_row (image, row_count):
     for x in range(image.shape[1]):
         pixel = image[row_count, x]
         hl_inst = hls2noteInst(pixel) #[note, instrument]
-        hl_inst_str = str(hl_inst[0]) + "/" + str(hl_inst[1]) #note/instrument
+        hl_inst_str = str(hl_inst[0]) + "/" + str(hl_inst[1]) + "/" + \
+                        str(hl_inst[2]) + "/" + str(hl_inst[3]) #note/instrument
         if hl_inst_str not in row:
             hl_inst_str = hl_inst_str.split("/")
             unique_vals = [int(val) for val in hl_inst_str]
             row.append(unique_vals)
-        
+    return row
+
+def n_vals_from_mode (image, row_count, n_mode):
+    row = []
+    complete_row = []
+    for x in range(image.shape[1]):
+        pixel = image[row_count, x]
+        hl_inst = hls2noteInst(pixel)
+        hl_inst_str = str(hl_inst[0]) + "/" + str(hl_inst[1]) + "/" + \
+                        str(hl_inst[2]) + "/" + str(hl_inst[3])
+        complete_row.append(hl_inst_str)
+        result = [item for items, c in Counter(complete_row).most_common()
+                                            for item in [items] * c]
+    complete_row = list(set(result))
+    selection_row = complete_row[:n_mode]
+    for selection in selection_row:
+        selection = selection.split("/")
+        individual_val = [int(val) for val in selection]
+        row.append(individual_val)
     return row
 
 def play (row, duration, player):
