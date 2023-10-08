@@ -3,7 +3,6 @@ from midiutil import MIDIFile
 import pygame.mixer
 import pygame.midi
 from time import sleep
-import numpy as np
 from collections import Counter
 
 def resize_img(image, resize_factor):
