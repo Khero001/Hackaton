@@ -193,8 +193,7 @@ def main():
         #Reproduce por línea
         play(row, 0.5, player)
     
-    print(doubleIns(25,60))
-    #print(hls2noteInst( image[120,200]) )
+
 
 
     '''
